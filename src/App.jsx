@@ -11,10 +11,12 @@ function App() {
   const [tareas ,setTareas] = React.useState ([])
   const [modoEdicion, setModoedicion] = React.useState(false)
   const [id ,setId] = React.useState ('')
+  const [error ,setError]=React.useState(null)
   const agregarTarea = e =>{
     e.preventDefault()
     if(!tarea.trim()){
       console.log('Elemento vacio')
+      setError('Escriba algo')
       return
     }
     console.log(tarea)
@@ -23,6 +25,7 @@ function App() {
       {id:shortid.generate(), nombreTarea:tarea}
     ])
     setTarea('')
+    setError(null)
   }
 
   const eliminarTarea = id => {
@@ -35,12 +38,14 @@ function App() {
     setModoedicion(true)
     setTarea(item.nombreTarea)
     setId(item.id)
+    setError(null)
   }
 
   const editarTarea = e =>{
     e.preventDefault()
     if(!tarea.trim()){
      console.log('Elemento vacio')
+     setError(null)
      return
     }
 
@@ -50,6 +55,7 @@ setTareas(arrayEditado)
     setModoedicion(false)
     setTarea('')
     setId('')
+    setError(null)
   }
 
 
@@ -105,6 +111,10 @@ setTareas(arrayEditado)
        </h4>
 
        <form  onSubmit={modoEdicion ?editarTarea : agregarTarea}>
+       {
+         error ? <span className="text-danger">{error}</span>
+          : null      
+        }
        <input 
        type="text" 
        className="form-cntrol mb-2"
